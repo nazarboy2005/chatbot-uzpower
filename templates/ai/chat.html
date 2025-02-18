@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chatbot - QatarAI</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/chatbot.css' %}" />
+</head>
+<body>
+  <header class="site-header">
+    <nav class="navbar">
+      <div class="logo">
+        <a href="{% url 'ai:chat' %}">QatarAI</a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="{% url 'ai:chat' %}" class="active">Chatbot</a></li>
+      </ul>
+    </nav>
+    <div class="header-content">
+      <h1>Chat with QatarAI</h1>
+      <p>Ask questions or request market predictions directly from our advanced AI chatbot.</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="chat-container">
+      <div class="chat-box" id="chat-box">
+        <!-- Chat messages will appear here -->
+      </div>
+      <div class="chat-input">
+        <input type="text" id="user-input" placeholder="Type your question here..." autocomplete="off" />
+        <button id="send-btn">Send</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 QatarAI. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const sendBtn = document.getElementById("send-btn");
+    const userInputField = document.getElementById("user-input");
+    const chatBox = document.getElementById("chat-box");
+
+    sendBtn.addEventListener("click", function() {
+      sendMessage();
+    });
+
+    userInputField.addEventListener("keypress", function(e) {
+      if (e.key === "Enter") {
+        sendMessage();
+      }
+    });
+
+    function sendMessage() {
+      const userInput = userInputField.value.trim();
+      if (!userInput) return;
+
+      appendMessage(userInput, "user-message");
+      userInputField.value = "";
+
+      fetch("{% url 'ai:chat' %}", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": "{{ csrf_token }}"
+        },
+        body: JSON.stringify({ message: userInput })
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then(data => {
+          appendMessage(data.response, "bot-message");
+        })
+        .catch(error => {
+          appendMessage("Error: " + error.message, "bot-message");
+        });
+    }
+
+    function appendMessage(text, className) {
+      const messageDiv = document.createElement("div");
+      messageDiv.classList.add("chat-message", className);
+      messageDiv.textContent = text;
+      chatBox.appendChild(messageDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+  </script>
+</body>
+</html>
