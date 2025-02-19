@@ -7,17 +7,27 @@
   <title>Chatbot - QatarAI</title>
   <link rel="stylesheet" href="{% static 'css/style.css' %}" />
   <link rel="stylesheet" href="{% static 'css/chatbot.css' %}" />
+  <style>
+    .site-header {
+      position: relative;
+      background-image: url("{% static 'assets/images/header-background.jpg' %}");
+      background-size: cover;
+      background-position: center;
+      color: white;
+      padding: 10px;
+      background: linear-gradient(
+          rgba(0, 0, 0, 0.5),
+          rgba(0, 0, 0, 0.5)
+        );
+      color: #fff;
+      text-align: center;
+      padding: 0 20px 100 0;
+      margin-bottom: 100px;
+    }
+  </style>
 </head>
 <body>
   <header class="site-header">
-    <nav class="navbar">
-      <div class="logo">
-        <a href="{% url 'ai:chat' %}">QatarAI</a>
-      </div>
-      <ul class="nav-links">
-        <li><a href="{% url 'ai:chat' %}" class="active">Chatbot</a></li>
-      </ul>
-    </nav>
     <div class="header-content">
       <h1>Chat with QatarAI</h1>
       <p>Ask questions or request market predictions directly from our advanced AI chatbot.</p>
