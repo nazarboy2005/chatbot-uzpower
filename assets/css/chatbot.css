@@ -31,7 +31,7 @@
 
 .chat-input button {
   padding: 15px 25px;
-  background-color: rgba(70, 66, 74, 1);
+  background-color: #8d1b3d; /* Qatar's ennabi / dark red color */
   color: #fff;
   border: none;
   cursor: pointer;
