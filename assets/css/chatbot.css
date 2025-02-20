@@ -93,3 +93,27 @@
 .chat-input button:hover {
   background-color: rgba(90, 85, 95, 1);
 }
+
+
+
+/* Make headings smaller in bot messages */
+.chat-message.bot-message h1,
+.chat-message.bot-message h2,
+.chat-message.bot-message h3,
+.chat-message.bot-message h4,
+.chat-message.bot-message h5,
+.chat-message.bot-message h6 {
+  font-size: 1.2em;  /* Adjust as needed */
+  margin: 0.5em 0;   /* Space above/below the heading */
+}
+
+/* Adjust list styling in bot messages */
+.chat-message.bot-message ul,
+.chat-message.bot-message ol {
+  padding-left: 1.5em; /* Indent for lists */
+  margin: 1em 0;       /* Space before/after lists */
+}
+
+.chat-message.bot-message li {
+  margin-bottom: 0.5em;
+}

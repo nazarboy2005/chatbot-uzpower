@@ -2,67 +2,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Chatbot - Baseer AI</title>
-  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-  <link rel="stylesheet" href="{% static 'css/chatbot.css' %}" />
-  <style>
-    .site-header {
-      position: relative;
-      background-image: url("{% static 'images/header-background.webp' %}");
-      background-size: cover;
-      background-position: center;
-      color: white;
-      padding: 10px;
-      color: #fff;
-      text-align: center;
-      padding: 0 20px 100 0;
-      margin-bottom: 100px;
-    }
-
-    .site-header::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.7);
-      z-index: 1;
-    }
-
-    .header-content {
-      position: relative;
-      z-index: 2;
-    }
-  </style>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Chatbot - Baseer AI</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/chatbot.css' %}"/>
+    <style>
+        .site-header {
+          position: relative;
+          background-image: url("{% static 'images/header-background.webp' %}");
+          background-size: cover;
+          background-position: center;
+          color: white;
+          padding: 10px;
+          text-align: center;
+          margin-bottom: 100px;
+        }
+        .site-header::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: rgba(0, 0, 0, 0.7);
+          z-index: 1;
+        }
+        .header-content {
+          position: relative;
+          z-index: 2;
+        }
+    </style>
 </head>
 <body>
-  <header class="site-header">
+<header class="site-header">
     <div class="header-content">
-      <h1>Chat with Baseer AI</h1>
-      <p>I'm your AI advisor for market research in Qatar, you can ask me anything related to Qatar's demographics, labor, business law, or companies.</p>
+        <h1>Chat with Baseer AI</h1>
+        <p>
+          I'm your AI advisor for market research in Qatar.
+          Ask me about demographics, labor, business law, or companies.
+        </p>
     </div>
-  </header>
+</header>
 
-  <main>
+<main>
     <div class="chat-container">
-      <div class="chat-box" id="chat-box">
-        <!-- Chat messages will appear here -->
-      </div>
-      <div class="chat-input">
-        <input type="text" id="user-input" placeholder="Type your question here..." autocomplete="off" />
-        <button id="send-btn">Send</button>
-      </div>
+        <div class="chat-box" id="chat-box">
+            <!-- Chat messages will appear here -->
+        </div>
+        <div class="chat-input">
+            <input type="text" id="user-input" placeholder="Type your question here..." autocomplete="off"/>
+            <button id="send-btn">Send</button>
+        </div>
     </div>
-  </main>
+</main>
 
-  <footer>
+<footer>
     <p>&copy; 2025 Baseer AI. All rights reserved.</p>
-  </footer>
+</footer>
 
-  <script>
+<!-- Marked (Markdown -> HTML) -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<!-- DOMPurify (sanitizes HTML to prevent XSS) -->
+<script src="https://cdn.jsdelivr.net/npm/dompurify@2.2.9/dist/purify.min.js"></script>
+
+<script>
     const sendBtn = document.getElementById("send-btn");
     const userInputField = document.getElementById("user-input");
     const chatBox = document.getElementById("chat-box");
@@ -81,9 +85,11 @@
       const userInput = userInputField.value.trim();
       if (!userInput) return;
 
-      appendMessage(userInput, "user-message");
+      // 1) Show the user's question as plain text
+      appendMessageAsText(userInput, "user-message");
       userInputField.value = "";
 
+      // 2) Send user input to the backend
       fetch("{% url 'ai:chat' %}", {
         method: "POST",
         headers: {
@@ -99,24 +105,40 @@
           return response.json();
         })
         .then(data => {
-          appendMessage(data.response, "bot-message");
+          // 3) data.response is presumably in Markdown. Convert to HTML
+          appendMessageAsMarkdown(data.response, "bot-message");
         })
         .catch(error => {
-          appendMessage("Error: " + error.message, "bot-message");
+          appendMessageAsText("Error: " + error.message, "bot-message");
         });
     }
 
-    function appendMessage(text, className) {
-    const messageDiv = document.createElement("div");
-    messageDiv.classList.add("chat-message", className);
-    messageDiv.textContent = text;
-    chatBox.appendChild(messageDiv);
+    // Append user messages as plain text (safe from injection)
+    function appendMessageAsText(text, className) {
+      const messageDiv = document.createElement("div");
+      messageDiv.classList.add("chat-message", className);
+      messageDiv.textContent = text;
+      chatBox.appendChild(messageDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
 
-    // Ensure the latest message is always visible
-    chatBox.scrollTop = chatBox.scrollHeight;
-}
+    // Convert AI's Markdown response to HTML, then append it
+    function appendMessageAsMarkdown(markdownText, className) {
+      const messageDiv = document.createElement("div");
+      messageDiv.classList.add("chat-message", className);
 
+      // Convert Markdown -> HTML using Marked
+      let html = marked.parse(markdownText);
 
-  </script>
+      // Sanitize the HTML to prevent malicious scripts
+      html = DOMPurify.sanitize(html);
+
+      // Insert the final, sanitized HTML
+      messageDiv.innerHTML = html;
+
+      chatBox.appendChild(messageDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+</script>
 </body>
 </html>
