@@ -1,0 +1,259 @@
+/* {% load static %} */
+
+/* Global Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0; 
+}
+
+
+.main-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+  background-color: #ffffff;
+  color: #333;
+}
+
+/* Navigation Bar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 50px;
+  background-color: rgba(70, 66, 74, 0.9);
+  color: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.navbar .logo {
+  display: flex;
+  align-items: center;
+}
+
+.navbar .logo img {
+  height: 50px;
+}
+
+.navbar .logo a {
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
+  margin-left: 10px;
+}
+
+.navbar .nav-links {
+  list-style: none;
+  display: flex;
+}
+
+.navbar .nav-links li {
+  margin-left: 30px;
+  position: relative;
+}
+
+.navbar .nav-links a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  font-size: 0.95rem;
+  padding-bottom: 5px;
+}
+
+.navbar .nav-links a:hover,
+.navbar .nav-links a.active {
+  color: #ffffff;
+  border-bottom: 2px solid #ffffff;
+}
+
+.nav-links .dropdown-icon::after {
+  content: "▼";
+  font-size: 0.7rem;
+  margin-left: 5px;
+  vertical-align: middle;
+}
+
+.language-switch {
+  display: flex;
+  align-items: center;
+}
+
+.language-switch a {
+  color: #fff;
+  text-decoration: none;
+  margin-left: 15px;
+}
+
+/* Header Section with Wave Design */
+
+
+.header-content h1 {
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+  font-weight: 300;
+}
+
+.header-content p {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Wave separator */
+.wave-divider {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background-color: #ffffff;
+  clip-path: ellipse(50% 50% at 50% 100%);
+  z-index: 1;
+}
+
+/* Key Topics Section */
+.key-topics {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.key-topics h2 {
+  font-size: 2.8rem;
+  margin-bottom: 60px;
+  color: #333;
+  font-weight: 400;
+}
+
+.topics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.topic-card {
+  position: relative;
+  background-color: rgba(90, 85, 95, 0.7);
+  border-radius: 15px;
+  overflow: hidden;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 30px;
+  text-align: left;
+  color: white;
+  transition: transform 0.3s ease;
+  background-size: cover;
+  background-position: center;
+}
+
+.topic-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.7) 70%);
+  z-index: 1;
+}
+
+.topic-card:hover {
+  transform: translateY(-10px);
+}
+
+.topic-card .icon {
+  position: relative;
+  z-index: 2;
+  width: 50px;
+  height: 50px;
+  margin-bottom: 15px;
+}
+
+.topic-card h3 {
+  position: relative;
+  z-index: 2;
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.topic-card p {
+  position: relative;
+  z-index: 2;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Main Content */
+main {
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Footer */
+footer {
+  background-color: #8d1b3d;
+  color: #fff;
+  text-align: center;
+  padding: 40px 20px;
+  margin-top: 80px;
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+  .navbar {
+    padding: 15px 20px;
+  }
+  
+  .topic-card {
+    height: 250px;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    padding: 15px;
+  }
+  
+  .navbar .nav-links {
+    flex-direction: column;
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+  .navbar .nav-links li {
+    margin: 10px 0;
+    text-align: center;
+  }
+  
+  .header-content h1 {
+    font-size: 2.2rem;
+  }
+  
+  .key-topics h2 {
+    font-size: 2.2rem;
+    margin-bottom: 40px;
+  }
+  
+  .topics-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .wave-divider {
+    height: 50px;
+  }
+}
