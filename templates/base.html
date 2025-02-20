@@ -2,32 +2,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}AI Assistant{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chatbot - Baseer AI</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/chat.css' %}" />
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="{% url 'ai:chat' %}" class="logo">AI Assistant</a>
-            <ul class="nav-links">
-                <li><a href="{% url 'ai:chat' %}">Chat</a></li>
-            </ul>
-        </div>
-    </nav>
+  <header class="site-header">
+    <div class="header-content">
+      <h1>Chat with Baseer AI</h1>
+      <p>
+        I'm your AI advisor for market research in Qatar. Ask me anything related
+        to Qatar's demographics, labor, business law, or companies.
+      </p>
+    </div>
+  </header>
 
-    <main class="main-content">
-        {% block content %}{% endblock %}
-    </main>
+  <main>
+    <div class="chat-container">
+      <div class="chat-box" id="chat-box">
+        <!-- Chat messages will appear here -->
+      </div>
+      <div class="chat-input">
+        <input type="text" id="user-input" placeholder="Type your question here..." autocomplete="off" />
+        <button id="send-btn">Send</button>
+      </div>
+    </div>
+  </main>
 
-    <footer class="footer">
-        <div class="footer-content">
-            <p>&copy; 2025 AI Assistant. All rights reserved.</p>
-        </div>
-    </footer>
+  <footer>
+    <p>&copy; 2025 Baseer AI. All rights reserved.</p>
+  </footer>
 
-    {% block scripts %}{% endblock %}
+  <script>
+    const sendBtn = document.getElementById("send-btn");
+    const userInputField = document.getElementById("user-input");
+    const chatBox = document.getElementById("chat-box");
+
+    sendBtn.addEventListener("click", function() {
+      sendMessage();
+    });
+
+    userInputField.addEventListener("keypress", function(e) {
+      if (e.key === "Enter") {
+        sendMessage();
+      }
+    });
+
+    function sendMessage() {
+      const userInput = userInputField.value.trim();
+      if (!userInput) return;
+
+      appendMessage(userInput, "user-message");
+      userInputField.value = "";
+
+      fetch("{% url 'ai:chat' %}", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": "{{ csrf_token }}"
+        },
+        body: JSON.stringify({ message: userInput })
+      })
+        .then(response => response.json())
+        .then(data => {
+          appendMessage(data.response, "bot-message");
+        })
+        .catch(error => {
+          appendMessage("Error: " + error.message, "bot-message");
+        });
+    }
+
+    function appendMessage(text, className) {
+      const messageDiv = document.createElement("div");
+      messageDiv.classList.add("chat-message", className);
+      messageDiv.textContent = text;
+      chatBox.appendChild(messageDiv);
+      // Auto-scroll to latest message
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+  </script>
 </body>
 </html>

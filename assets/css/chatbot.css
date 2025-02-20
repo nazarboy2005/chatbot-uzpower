@@ -1,59 +1,95 @@
+/* Main Chat Container */
 .chat-container {
   display: flex;
   flex-direction: column;
   width: 90%;
   max-width: 600px;
   margin: 50px auto;
-  border: 1px solid #eee;
+  border: 1px solid #ddd;
   border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   background: #fff;
+  overflow: hidden;
 }
 
+/* Chat Box (Where Messages Appear) */
 .chat-box {
   flex: 1;
-  padding: 25px;
+  padding: 20px;
   height: 400px;
   overflow-y: auto;
+  background: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  scroll-behavior: smooth;
 }
 
+/* Scrollbar Styling */
+.chat-box::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-box::-webkit-scrollbar-thumb {
+  background-color: #8d1b3d;
+  border-radius: 10px;
+}
+
+/* Chat Bubbles */
+.chat-message {
+  max-width: 80%;
+  padding: 12px 16px;
+  border-radius: 18px;
+  margin: 8px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* User Messages (Blue Bubble, Right-Aligned) */
+.user-message {
+  align-self: flex-end;
+  background: #d1e7ff;
+  color: #333;
+  text-align: right;
+  border-top-right-radius: 4px;
+}
+
+/* Bot Messages (Grey Bubble, Left-Aligned) */
+.bot-message {
+  align-self: flex-start;
+  background: #f1f1f1;
+  color: #333;
+  text-align: left;
+  border-top-left-radius: 4px;
+}
+
+/* Input Box and Send Button */
 .chat-input {
   display: flex;
-  border-top: 1px solid #eee;
+  padding: 12px;
+  background: #fff;
+  border-top: 1px solid #ddd;
 }
 
 .chat-input input {
   flex: 1;
-  padding: 15px;
-  border: none;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
   font-size: 14px;
+  outline: none;
 }
 
 .chat-input button {
-  padding: 15px 25px;
-  background-color: #8d1b3d; /* Qatar's ennabi / dark red color */
+  padding: 12px 20px;
+  background-color: #8d1b3d;
   color: #fff;
   border: none;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  margin-left: 10px;
+  transition: background 0.3s ease;
 }
 
 .chat-input button:hover {
   background-color: rgba(90, 85, 95, 1);
-}
-
-.chat-message {
-  margin: 15px 0;
-  padding: 12px 15px;
-  border-radius: 8px;
-}
-
-.user-message {
-  background: #f0f7ff;
-  text-align: right;
-}
-
-.bot-message {
-  background: #f5f5f5;
-  text-align: left;
 }

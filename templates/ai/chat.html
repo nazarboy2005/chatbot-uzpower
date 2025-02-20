@@ -107,12 +107,16 @@
     }
 
     function appendMessage(text, className) {
-      const messageDiv = document.createElement("div");
-      messageDiv.classList.add("chat-message", className);
-      messageDiv.textContent = text;
-      chatBox.appendChild(messageDiv);
-      chatBox.scrollTop = chatBox.scrollHeight;
-    }
+    const messageDiv = document.createElement("div");
+    messageDiv.classList.add("chat-message", className);
+    messageDiv.textContent = text;
+    chatBox.appendChild(messageDiv);
+
+    // Ensure the latest message is always visible
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+
   </script>
 </body>
 </html>
